@@ -18,16 +18,48 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
-const Web3 = require("web3");
+const Web3 = require('web3');
 let AppService = class AppService {
     constructor() {
+        this.ret = [];
         this.web3 = new Web3('http://localhost:8545');
     }
     root() {
         return __awaiter(this, void 0, void 0, function* () {
-            const block = yield this.web3.eth.getBlock('latest');
-            const { number, hash, transactions, timestamp } = block;
-            return `Latest number: ${number} , hash: ${hash} transactions: ${transactions.length}`;
+            const block = yield this.getLatest();
+            return this.showBlock(block);
+        });
+    }
+    getLatest() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.latest = this.latest || (yield this.web3.eth.getBlock('latest'));
+        });
+    }
+    task1(n) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const lt = yield this.getLatest();
+            for (let i = 0; i < n; i++) {
+                const block = yield this.web3.eth.getBlock(lt.number - i);
+                this.ret.push(this.showBlock(block));
+            }
+            return this.ret.join('<br>');
+        });
+    }
+    showBlock(block) {
+        const { number, hash, transactions, timestamp } = block;
+        return `Latest number: ${number} , hash: ${hash} transactions: ${transactions.length}`;
+    }
+    task2(n) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const block = yield this.web3.eth.getBlock(n);
+            const { transactions } = block;
+            const ret = [];
+            for (const hash of transactions) {
+                const t = yield this.web3.eth.getTransaction(hash);
+                const { blockHash, gas } = t;
+                ret.push(`${blockHash} gas: ${gas}`);
+            }
+            return `Transactions: <br>` + ret.join('<br>');
         });
     }
 };

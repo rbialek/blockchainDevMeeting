@@ -8,6 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -28,6 +31,16 @@ let AppController = class AppController {
             return yield this.appService.root();
         });
     }
+    t1(n) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.appService.task1(n);
+        });
+    }
+    t2(n) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.appService.task2(n);
+        });
+    }
 };
 __decorate([
     common_1.Get(),
@@ -35,6 +48,20 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AppController.prototype, "root", null);
+__decorate([
+    common_1.Get('/t1/:n'),
+    __param(0, common_1.Param('n')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "t1", null);
+__decorate([
+    common_1.Get('/t2/:n'),
+    __param(0, common_1.Param('n')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "t2", null);
 AppController = __decorate([
     common_1.Controller(),
     __metadata("design:paramtypes", [app_service_1.AppService])
